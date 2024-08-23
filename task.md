@@ -100,6 +100,94 @@ Allow SSH connections.
 
 Lastly **Create**
 
+Once done, create firewall rules allowing TCP traffic on port 22:
+
+VIA CLOUD SHELL:
+
+gcloud compute firewall-rules create griffin-dev-allow-ssh \
+    --network=griffin-dev-vpc \
+    --allow=tcp:22 \
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=bastion \
+    --description="Allow SSH access to bastion host"
+
+gcloud compute firewall-rules create griffin-prod-allow-ssh \
+    --network=griffin-prod-vpc \
+    --allow=tcp:22 \
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=bastion \
+    --description="Allow SSH access to bastion host in production"
+
+VIA CLOUD CONSOLE:
+
+Go to **Firewall** > **Create a Firewall rule** > Name it griffin-dev-allow-ssh, set the network to griffin-dev-vpc, and allow tcp:22 from 0.0.0.0/0.
+
+Repeat same step for griffin-prod-allow-ssh in griffin-prod-vpc.
+
+
+# Task 4. Create and configure Cloud SQL Instance
+
+VIA CLOUD SHELL:
+
+gcloud sql instances create griffin-dev-db \
+    --database-version=MYSQL_5_7 \
+    --tier=db-n1-standard-1 \
+    --region=$REGION
+
+gcloud sql databases create wordpress --instance=griffin-dev-db
+
+gcloud sql users create wp_user --host=% --instance=griffin-dev-db --password=password123
+
+gcloud sql connect griffin-dev-db --user=root << EOF
+CREATE DATABASE wordpress;
+CREATE USER 'wp_user'@'%' IDENTIFIED BY 'stormwind_rules';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'%';
+FLUSH PRIVILEGES;
+EOF
+
+VIA CLOUD CONSOLE:
+
+Go to SQL >> Create instance >> MySQL and configure the instance with the name griffin-dev-db.
+
+Choose the appropriate region and settings.
+
+Create the wordpress database and wp_user user with necessary privileges using the SQL command interface.
+
+# Task 5. Create Kubernetes cluster
+
+VIA CLOUD SHELL:
+
+gcloud container clusters create griffin-dev \
+    --zone=$ZONE \
+    --num-nodes=2 \
+    --machine-type=e2-standard-4 \
+    --network=griffin-dev-vpc \
+    --subnetwork=griffin-dev-wp
+
+VIA CLOUD CONSOLE:
+
+Go to Kubernetes Engine >> Click Create Cluster >> Select Standard Cluster.
+
+Name it griffin-dev.
+
+Set the Node Pools:
+
+Machine type: e2-standard-4
+
+Number of nodes: 2
+
+Set the Network to griffin-dev-vpc and Subnetwork to griffin-dev-wp.
+
+**Create**
+
+# Task 6. Prepare the Kubernetes cluster
+
+From Cloud Shell copy all files using gsutil cp -r gs://cloud-training/gsp321/wp-k8s.
+
+**Change to the directory and list the files:**
+
+cd wp-k8s
+ls
 
 
 
