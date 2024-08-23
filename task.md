@@ -31,10 +31,23 @@ gcloud compute networks subnets create griffin-dev-mgmt \
 
 USING CLOUD CONSOLE:
 
-Go to **network.** > **Create VPC network**.
+Go to **network** > **Create VPC network**
 Name it griffin-dev-vpc.
-Add subnets griffin-dev-wp (192.168.16.0/20) and griffin-dev-mgmt (192.168.32.0/20).
+Add subnets **griffin-dev-wp (192.168.16.0/20)** and **griffin-dev-mgmt (192.168.32.0/20)**.
 Click **Create.**
+
+# Task 2: Create production VPC manually
+
+Create a VPC called griffin-prod-vpc with the following subnets only:
+
+griffin-prod-wp
+
+IP address block: 192.168.48.0/20
+
+griffin-prod-mgmt
+
+IP address block: 192.168.64.0/20
+
 
 
 
