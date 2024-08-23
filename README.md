@@ -3,7 +3,7 @@
 
 You are expected to have the skills and knowledge for these tasks.
 
-# What you need to do:
+# What you need to know:
 Create a development VPC with three subnets manually
 Create a production VPC with three subnets manually
 Create a bastion that is connected to both VPCs
