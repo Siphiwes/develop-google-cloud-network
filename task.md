@@ -15,6 +15,8 @@ export ZONE=us-east1-b
 
 export ADDITIONAL_ENGINEER_EMAIL=engineer@griffin.com
 
+USING CLOUD SHELL:
+
 gcloud compute networks create griffin-dev-vpc --subnet-mode=custom
 
 gcloud compute networks subnets create griffin-dev-wp \
@@ -26,6 +28,13 @@ gcloud compute networks subnets create griffin-dev-mgmt \
     --network=griffin-dev-vpc \
     --range=192.168.32.0/20 \
     --region=$REGION
+
+USING CLOUD CONSOLE:
+
+Go to **network.** > **Create VPC network**.
+Name it griffin-dev-vpc.
+Add subnets griffin-dev-wp (192.168.16.0/20) and griffin-dev-mgmt (192.168.32.0/20).
+Click **Create.**
 
 
 
