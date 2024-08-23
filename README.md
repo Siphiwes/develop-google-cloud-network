@@ -1,4 +1,4 @@
-# develop-google-cloud-network
+# Develop-google-cloud-network
 # As a cloud engineer at Jooli Inc. and recently trained with Google Cloud and Kubernetes, you have been asked to help a new team (Griffin) set up their environment. The team has asked for your help and has done some work, but needs you to complete the work.
 
 
