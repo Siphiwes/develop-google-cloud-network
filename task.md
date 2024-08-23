@@ -187,7 +187,108 @@ From Cloud Shell copy all files using gsutil cp -r gs://cloud-training/gsp321/wp
 **Change to the directory and list the files:**
 
 cd wp-k8s
+
 ls
+
+**Update the wp-env.yaml file**:
+
+nano wp-env.yaml
+
+Note: Update the values of username to wp_user and password to stormwind_rules
+
+**Setup secrets and volumes**
+
+VIA CLOUD SHELL
+
+gcloud iam service-accounts keys create key.json \
+    --iam-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+kubectl create secret generic cloudsql-instance-credentials \
+    --from-file key.json
+
+ALTERNATIVE:
+
+Navigate to Cloud Shell and use the gsutil command to copy files.
+
+**Editing Files:**
+
+Use Cloud Shell Editor to modify wp-env.yaml.
+
+# Task 7. Create a WordPress deployment
+
+VIA CLOUD SHELL:
+
+gcloud sql instances describe griffin-dev-db --format='value(connectionName)'
+
+Then, **edit the wp-deployment.yaml file**
+
+nano wp-deployment.yaml
+
+You need to find and replace the placeholder YOUR_SQL_INSTANCE with the instance connection name retrieved in the previous step. Now Save the changes and exit the text editor.
+
+**Verify the changes:**
+
+cat wp-deployment.yaml
+
+**Deploy WordPress:**
+
+kubectl apply -f wp-env.yaml
+
+kubectl apply -f wp-deployment.yaml
+
+kubectl apply -f wp-service.yaml
+
+# Task 8. Enable monitoring
+
+VIA CLOUD SHELL:
+
+**List the services in the Kubernetes cluster:**
+
+kubectl get services
+
+Look for the wordpress service of type LoadBalancer. The EXTERNAL-IP column will contain the IP address you use as the WordPress site URL.
+
+export WORDPRESS_SITE_URL=[EXTERNAL_IP]
+
+**Create uptime check**
+
+gcloud monitoring uptime create griffin-dev-wp-uptime-check \
+    --display-name="Griffin Dev WP Uptime Check" \
+    --resource-labels=host=$WORDPRESS_EXTERNAL_IP
+
+VIA CLOUD CONSOLE:
+
+Go to **Google Cloud Console** >> **Monitoring** >> **Uptime Checks** from the menu.
+
+Create Uptime Check.
+
+Fill in the required details:
+1. Title: Griffin Dev WP Uptime Check
+2. Resource Type: URL
+3. Hostname: $WORDPRESS_SITE_URL (use the actual external IP address, e.g., 34.48.95.59)
+4. Path: /
+5. Port: 80
+6. Check Frequency: 5 minutes
+7. Timeout: 10 seconds
+
+**Save the uptime check.**
+
+# Task 9. Provide access for an additional engineer
+
+VIA CLOUD SHELL:
+
+gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
+    --member="user:$ADDITIONAL_ENGINEER_EMAIL" \
+    --role="roles/editor"
+
+VIA CLOUD SHELL:
+
+Go to **IAM & Admin** >> **Add to add a new member**
+
+Enter the email of the additional engineer.
+
+Assign the Editor role.
+
+**Save**
 
 
 
