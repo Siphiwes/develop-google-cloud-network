@@ -4,15 +4,15 @@
 You are expected to have the skills and knowledge for these tasks.
 
 # What you need to know:
-Create a development VPC with three subnets manually
-Create a production VPC with three subnets manually
-Create a bastion that is connected to both VPCs
-Create a development Cloud SQL Instance and connect and prepare the WordPress environment
-Create a Kubernetes cluster in the development VPC for WordPress
-Prepare the Kubernetes cluster for the WordPress environment
-Create a WordPress deployment using the supplied configuration
-Enable monitoring of the cluster
-Provide access for an additional engineer
+1. Create a development VPC with three subnets manually
+2. Create a production VPC with three subnets manually
+3. Create a bastion that is connected to both VPCs
+4. Create a development Cloud SQL Instance and connect and prepare the WordPress environment
+5. Create a Kubernetes cluster in the development VPC for WordPress
+6. Prepare the Kubernetes cluster for the WordPress environment
+7. Create a WordPress deployment using the supplied configuration
+8. Enable monitoring of the cluster
+9. Provide access for an additional engineer
 
 Some Jooli Inc. standards you should follow:
 Create all resources in the REGION region and ZONE zone, unless otherwise directed.
